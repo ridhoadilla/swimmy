@@ -20,5 +20,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("pools.urls")),
+    path('', views.index, name='index'),
+    #path("", include("pools.urls")),
+    path('<int:pool_id>/', views.detail, name='pool_detail'),
 ]
