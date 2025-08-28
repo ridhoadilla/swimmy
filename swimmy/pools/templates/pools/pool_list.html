@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Swimming Pools in Jakarta</title>
+</head>
+<body>
+    <h1>Swimming Pools in Jakarta</h1>
+    <ul>
+        {% for pool in pools %}
+            <li><a href="{% url 'pool_detail' pk=pool.pk %}">{{ pool.name }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
