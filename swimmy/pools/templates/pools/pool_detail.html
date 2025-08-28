@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ pool.name }}</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        #map { height: 400px; }
+    </style>
+</head>
+<body>
+    <h1>{{ pool.name }}</h1>
+    <p><strong>Address:</strong> {{ pool.address }}</p>
+
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map').setView([{{ pool.latitude }}, {{ pool.longitude }}], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        L.marker([{{ pool.latitude }}, {{ pool.longitude }}]).addTo(map)
+            .bindPopup('{{ pool.name }}')
+            .openPopup();
+    </script>
+
+    <h2>Comments</h2>
+    <ul>
+        {% for comment in pool.comments.all %}
+            <li>
+                <strong>{{ comment.author }}</strong> ({{ comment.created_date }})
+                <p>{{ comment.text }}</p>
+            </li>
+        {% empty %}
+            <li>No comments yet.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h2>Add a comment</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
